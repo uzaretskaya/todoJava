@@ -18,7 +18,7 @@ public class PriorityService {
     }
 
     public List<Priority> findAll(String email) {
-        return priorityRepository.findByUserEmailOrderByTitleAsc(email);
+        return priorityRepository.findByUserEmailOrderByIdAsc(email);
     }
 
     public Priority add(Priority priority) {

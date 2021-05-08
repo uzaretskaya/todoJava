@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PriorityRepository extends JpaRepository<Priority, Long> {
 
-    List<Priority> findByUserEmailOrderByTitleAsc(String email);
+    List<Priority> findByUserEmailOrderByIdAsc(String email);
 
     @Query("SELECT c from Priority c where " +
             "(:title is null or :title='' " +

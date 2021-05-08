@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.uzaretskaya.todo.business.entity.Category;
 import ru.uzaretskaya.todo.business.search.CategorySearchValues;
 import ru.uzaretskaya.todo.business.service.CategoryService;
-import ru.uzaretskaya.todo.business.util.AllExecutedMethodsLogger;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -21,6 +20,8 @@ import java.util.NoSuchElementException;
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.ResponseEntity.ok;
+import static ru.uzaretskaya.todo.business.util.AllExecutedMethodsLogger.loggingMethodName;
 
 @RestController
 @RequestMapping("/category")
@@ -35,13 +36,13 @@ public class CategoryController {
 
     @PostMapping("/all")
     public ResponseEntity<List<Category>> findAll(@RequestBody String email) {
-        AllExecutedMethodsLogger.loggingMethodName(format("CategoryController: findAll(%s)", email));
-        return ResponseEntity.ok(categoryService.findAll(email));
+        loggingMethodName(format("CategoryController: findAll(%s)", email));
+        return ok(categoryService.findAll(email));
     }
 
     @PutMapping("/add")
     public ResponseEntity<Category> add(@RequestBody Category category) {
-        AllExecutedMethodsLogger.loggingMethodName(format("CategoryController: add(%s)", category));
+        loggingMethodName(format("CategoryController: add(%s)", category));
 
         if(category.getId() != null && category.getId() != 0) {
             return new ResponseEntity("Redundant parameter: ID must be NULL", NOT_ACCEPTABLE);
@@ -51,12 +52,12 @@ public class CategoryController {
             return new ResponseEntity("Missing parameter: title", NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(categoryService.add(category));
+        return ok(categoryService.add(category));
     }
 
     @PatchMapping("/update")
     public ResponseEntity<Category> update(@RequestBody Category category) {
-        AllExecutedMethodsLogger.loggingMethodName(format("CategoryController: update(%s)", category));
+        loggingMethodName(format("CategoryController: update(%s)", category));
 
         if(category.getId() == null || category.getId() == 0) {
             return new ResponseEntity("Missing parameter: id", NOT_ACCEPTABLE);
@@ -73,7 +74,7 @@ public class CategoryController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<Category> delete(@RequestBody Long id) {
-        AllExecutedMethodsLogger.loggingMethodName(format("CategoryController: delete(%d)", id));
+        loggingMethodName(format("CategoryController: delete(%d)", id));
 
         if(id == null || id == 0) {
             return new ResponseEntity("Missing parameter: id", NOT_ACCEPTABLE);
@@ -91,16 +92,16 @@ public class CategoryController {
 
     @PostMapping("search")
     public ResponseEntity<List<Category>> search(@RequestBody CategorySearchValues categorySearchValues) {
-        AllExecutedMethodsLogger.loggingMethodName(format("CategoryController: search(%s)", categorySearchValues));
+        loggingMethodName(format("CategoryController: search(%s)", categorySearchValues));
 
         List<Category> categories = categoryService.findByValues(categorySearchValues.getTitle(), categorySearchValues.getEmail());
 
-        return ResponseEntity.ok(categories);
+        return ok(categories);
     }
 
     @PostMapping("/id")
     public ResponseEntity<Category> findById(@RequestBody Long id) {
-        AllExecutedMethodsLogger.loggingMethodName(format("CategoryController: findById(%d)", id));
+        loggingMethodName(format("CategoryController: findById(%d)", id));
 
         Category category;
         try {
@@ -109,6 +110,6 @@ public class CategoryController {
             e.printStackTrace();
             return new ResponseEntity(format("Category id=%d not found!", id), NOT_ACCEPTABLE);
         }
-        return ResponseEntity.ok(category);
+        return ok(category);
     }
 }
