@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>d79db460-9c66-44b7-b907-35c83e62fc83.SCHEMA:postgres.tasklist</OriginalElement>
+  <nodes>
+    <node x="469.0" y="173.0">d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.category</node>
+    <node x="0.0" y="22.0">d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.role_data</node>
+    <node x="482.1964285714285" y="370.0">d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.task</node>
+    <node x="148.0" y="184.0">d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.stat</node>
+    <node x="668.0" y="184.0">d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.activity</node>
+    <node x="420.75" y="0.0">d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.user_data</node>
+    <node x="20.0" y="206.0">d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.user_role</node>
+    <node x="341.0" y="184.0">d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.priority</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.stat" target="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.user_data" relationship="REFERENCES">
+      <point x="0.0" y="-61.5" />
+      <point x="234.5" y="148.0" />
+      <point x="476.75" y="148.0" />
+      <point x="0.0" y="61.5" />
+    </edge>
+    <edge source="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.task" target="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.user_data" relationship="REFERENCES">
+      <point x="48.66666666666663" y="-94.5" />
+      <point x="603.8630952380952" y="344.0" />
+      <point x="808.5" y="344.0" />
+      <point x="808.5" y="148.0" />
+      <point x="476.75" y="148.0" />
+      <point x="0.0" y="61.5" />
+    </edge>
+    <edge source="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.priority" target="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.user_data" relationship="REFERENCES">
+      <point x="0.0" y="-61.5" />
+      <point x="395.0" y="148.0" />
+      <point x="476.75" y="148.0" />
+      <point x="0.0" y="61.5" />
+    </edge>
+    <edge source="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.task" target="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.priority" relationship="REFERENCES">
+      <point x="-48.66666666666663" y="-94.5" />
+      <point x="506.52976190476187" y="344.0" />
+      <point x="395.0" y="344.0" />
+      <point x="0.0" y="61.5" />
+    </edge>
+    <edge source="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.user_role" target="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.role_data" relationship="REFERENCES">
+      <point x="-27.0" y="-39.5" />
+      <point x="0.0" y="39.5" />
+    </edge>
+    <edge source="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.activity" target="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.user_data" relationship="REFERENCES">
+      <point x="0.0" y="-61.5" />
+      <point x="733.0" y="148.0" />
+      <point x="476.75" y="148.0" />
+      <point x="0.0" y="61.5" />
+    </edge>
+    <edge source="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.user_role" target="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.user_data" relationship="REFERENCES">
+      <point x="27.0" y="-39.5" />
+      <point x="101.0" y="148.0" />
+      <point x="476.75" y="148.0" />
+      <point x="0.0" y="61.5" />
+    </edge>
+    <edge source="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.task" target="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.category" relationship="REFERENCES">
+      <point x="0.0" y="-94.5" />
+      <point x="555.1964285714284" y="344.0" />
+      <point x="558.5" y="344.0" />
+      <point x="0.0" y="72.5" />
+    </edge>
+    <edge source="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.category" target="d79db460-9c66-44b7-b907-35c83e62fc83.TABLE:postgres.tasklist.user_data" relationship="REFERENCES">
+      <point x="0.0" y="-72.5" />
+      <point x="558.5" y="148.0" />
+      <point x="476.75" y="148.0" />
+      <point x="0.0" y="61.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.9433051869722556" showDependencies="false" x="404.50000000000006" y="279.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+
