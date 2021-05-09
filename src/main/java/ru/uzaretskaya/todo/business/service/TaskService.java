@@ -1,9 +1,12 @@
 package ru.uzaretskaya.todo.business.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.uzaretskaya.todo.business.entity.Task;
 import ru.uzaretskaya.todo.business.repository.TaskRepository;
+import ru.uzaretskaya.todo.business.search.TaskSearchValues;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -37,5 +40,17 @@ public class TaskService {
 
     public Task findById(Long id) {
         return taskRepository.findById(id).get();
+    }
+
+    public Page<Task> find(TaskSearchValues taskSearchValues, PageRequest pageRequest) {
+        return taskRepository.findByParams(
+                taskSearchValues.getTitle(),
+                taskSearchValues.getCompleted(),
+                taskSearchValues.getPriorityId(),
+                taskSearchValues.getCategoryId(),
+                taskSearchValues.getEmail(),
+                taskSearchValues.getDateFrom(),
+                taskSearchValues.getDateTo(),
+                pageRequest);
     }
 }
