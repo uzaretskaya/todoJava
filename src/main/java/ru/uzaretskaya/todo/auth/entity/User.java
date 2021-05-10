@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -31,12 +32,15 @@ public class User {
 
     @Column
     @Email
+    @NotNull
     private String email;
 
     @Column
+    @NotNull
     private String password;
 
     @Column
+    @NotNull
     private String username;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
