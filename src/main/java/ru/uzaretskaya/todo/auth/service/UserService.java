@@ -18,4 +18,9 @@ public class UserService {
     public User save(User user) {
         return repository.save(user);
     }
+
+    public boolean exists(String username, String email) {
+        return repository.existsByUsername(username) || repository.existsByEmail(email);
+    }
+
 }
