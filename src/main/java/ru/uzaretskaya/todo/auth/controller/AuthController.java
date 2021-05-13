@@ -3,8 +3,10 @@ package ru.uzaretskaya.todo.auth.controller;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,12 +15,12 @@ import ru.uzaretskaya.todo.auth.entity.Activity;
 import ru.uzaretskaya.todo.auth.entity.Role;
 import ru.uzaretskaya.todo.auth.entity.User;
 import ru.uzaretskaya.todo.auth.exception.RoleNotFoundException;
+import ru.uzaretskaya.todo.auth.exception.UserAlreadyActivatedException;
 import ru.uzaretskaya.todo.auth.exception.UsernameOrEmailExistsException;
 import ru.uzaretskaya.todo.auth.object.JsonException;
 import ru.uzaretskaya.todo.auth.service.UserService;
 
 import javax.validation.Valid;
-
 import java.util.UUID;
 
 import static java.lang.String.format;
@@ -57,6 +59,21 @@ public class AuthController {
         userService.register(user, activity);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/activate")
+    public ResponseEntity<Boolean> activateUser(@RequestBody String uuid) {
+
+        Activity activity = userService.findActivityByUuid(uuid)
+                .orElseThrow(() -> new UsernameNotFoundException(format("Activity with uuid: %s not found!", uuid)));
+
+        if (activity.isActivated()) {
+            throw new UserAlreadyActivatedException("User already activated");
+        }
+
+        int updatedCount = userService.activate(uuid);
+
+        return ResponseEntity.ok(updatedCount == 1);
     }
 
     @ExceptionHandler(Exception.class)

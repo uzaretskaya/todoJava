@@ -43,4 +43,17 @@ public class UserService {
         return roleRepository.findByName(name);
     }
 
+    public Optional<Activity> findActivityByUuid(String uuid) {
+        return activityRepository.findByUuid(uuid);
+    }
+
+    public int activate(String uuid) {
+        return activityRepository.changeActivated(uuid, true);
+    }
+
+    // maybe for future
+    public int deactivate(String uuid) {
+        return activityRepository.changeActivated(uuid, false);
+    }
+
 }
