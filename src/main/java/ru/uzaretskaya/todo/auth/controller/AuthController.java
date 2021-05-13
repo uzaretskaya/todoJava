@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.uzaretskaya.todo.auth.entity.Activity;
 import ru.uzaretskaya.todo.auth.entity.Role;
 import ru.uzaretskaya.todo.auth.entity.User;
 import ru.uzaretskaya.todo.auth.exception.RoleNotFoundException;
@@ -17,6 +18,8 @@ import ru.uzaretskaya.todo.auth.object.JsonException;
 import ru.uzaretskaya.todo.auth.service.UserService;
 
 import javax.validation.Valid;
+
+import java.util.UUID;
 
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -48,7 +51,11 @@ public class AuthController {
                 .orElseThrow(() -> new RoleNotFoundException(format("Default role %s not found!", DEFAULT_ROLE)));
         user.getRoles().add(userRole);
 
-        userService.save(user);
+        Activity activity = new Activity();
+        activity.setUser(user);
+        activity.setUuid(UUID.randomUUID().toString());
+        userService.register(user, activity);
+
         return ResponseEntity.ok().build();
     }
 
