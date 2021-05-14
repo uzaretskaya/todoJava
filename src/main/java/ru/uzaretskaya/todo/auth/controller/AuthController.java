@@ -3,6 +3,11 @@ package ru.uzaretskaya.todo.auth.controller;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,6 +23,7 @@ import ru.uzaretskaya.todo.auth.exception.RoleNotFoundException;
 import ru.uzaretskaya.todo.auth.exception.UserAlreadyActivatedException;
 import ru.uzaretskaya.todo.auth.exception.UsernameOrEmailExistsException;
 import ru.uzaretskaya.todo.auth.object.JsonException;
+import ru.uzaretskaya.todo.auth.service.UserDetailsImpl;
 import ru.uzaretskaya.todo.auth.service.UserService;
 
 import javax.validation.Valid;
@@ -34,11 +40,13 @@ public class AuthController {
 
     private UserService userService;
     private PasswordEncoder encoder;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder) {
+    public AuthController(UserService userService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
         this.userService = userService;
         this.encoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
     @PutMapping("/register")
@@ -74,6 +82,20 @@ public class AuthController {
         int updatedCount = userService.activate(uuid);
 
         return ResponseEntity.ok(updatedCount == 1);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@Valid @RequestBody User user) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        if (!userDetails.isActivated()) {
+            throw new DisabledException("User disabled");
+        }
+
+        return ResponseEntity.ok().body(userDetails.getUser());
     }
 
     @ExceptionHandler(Exception.class)
