@@ -8,18 +8,27 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.session.SessionManagementFilter;
+import ru.uzaretskaya.todo.auth.filter.AuthTokenFilter;
 import ru.uzaretskaya.todo.auth.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity(debug = true)
 public class SpringConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
+    private AuthTokenFilter authTokenFilter;
 
     @Autowired
     public void setUserDetailsService(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
+    }
+
+    @Autowired
+    public void setAuthTokenFilter(AuthTokenFilter authTokenFilter) {
+        this.authTokenFilter = authTokenFilter;
     }
 
     @Bean
@@ -40,11 +49,15 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.formLogin().disable();
         http.httpBasic().disable();
 
         http.requiresChannel().anyRequest().requiresSecure(); // https for all requests
 
         http.csrf().disable();
+
+        http.addFilterBefore(authTokenFilter, SessionManagementFilter.class);
     }
 }
