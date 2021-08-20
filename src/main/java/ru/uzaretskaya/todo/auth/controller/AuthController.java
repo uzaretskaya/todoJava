@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -76,6 +77,7 @@ public class AuthController {
     }
 
     @PostMapping("/test-with-auth")
+    @PreAuthorize("USER")
     public String testWithAuth() {
         return "OK-with-auth";
     }
@@ -126,9 +128,8 @@ public class AuthController {
             throw new DisabledException("User disabled");
         }
 
-        String jwt = jwtUtils.createAccessToken(userDetails.getUser());
-
         userDetails.getUser().setPassword(null);
+        String jwt = jwtUtils.createAccessToken(userDetails.getUser());
 
         HttpCookie cookie = cookieUtils.createJwtCookie(jwt);
         HttpHeaders responseHeaders = new HttpHeaders();

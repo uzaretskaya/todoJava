@@ -1,5 +1,6 @@
 package ru.uzaretskaya.todo.auth.utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -11,11 +12,16 @@ import org.springframework.stereotype.Component;
 import ru.uzaretskaya.todo.auth.entity.User;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
+
+import static io.jsonwebtoken.Claims.SUBJECT;
 
 @Component
 @Log
 public class JwtUtils {
+    public static final String USER_KEY = "user";
     @Value("${jwt.secret}")
     private String jwtSecret;
 
@@ -24,8 +30,13 @@ public class JwtUtils {
 
     public String createAccessToken(User user) {
         Date currentDate = new Date();
+
+        Map claims = new HashMap<String, Object>();
+        claims.put(USER_KEY, user);
+        claims.put(SUBJECT, user.getId());
+
         return Jwts.builder()
-                .setSubject(user.getId().toString())
+                .setClaims(claims)
                 .setIssuedAt(currentDate)
                 .setExpiration(new Date(currentDate.getTime() + accessTokenExpiration))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -47,5 +58,13 @@ public class JwtUtils {
         }
 
         return false;
+    }
+
+    public User getUser(String jwt) {
+        Map map = (Map)Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().get(USER_KEY);
+        ObjectMapper mapper = new ObjectMapper();
+        User user = mapper.convertValue(map, User.class);
+
+        return user;
     }
 }

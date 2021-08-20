@@ -2,9 +2,14 @@ package ru.uzaretskaya.todo.auth.filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ru.uzaretskaya.todo.auth.entity.User;
 import ru.uzaretskaya.todo.auth.exception.JwtCommonException;
+import ru.uzaretskaya.todo.auth.service.UserDetailsImpl;
 import ru.uzaretskaya.todo.auth.utils.CookieUtils;
 import ru.uzaretskaya.todo.auth.utils.JwtUtils;
 
@@ -52,8 +57,14 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             String jwt = cookieUtils.getAccessToken(request);
             if (jwt != null) {
                 if (jwtUtils.validate(jwt)) {
-                    // getting user details from jwt
-                    System.out.println("jwt = " + jwt);
+                    User user = jwtUtils.getUser(jwt);
+                    UserDetailsImpl userDetails = new UserDetailsImpl(user);
+
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+
+                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 } else {
                     throw new JwtCommonException("JWT validate exception");
                 }
