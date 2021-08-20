@@ -70,6 +70,16 @@ public class AuthController {
         return "OK";
     }
 
+    @PostMapping("/test-no-auth")
+    public String testNoAuth() {
+        return "OK-no-auth";
+    }
+
+    @PostMapping("/test-with-auth")
+    public String testWithAuth() {
+        return "OK-with-auth";
+    }
+
     @PutMapping("/register")
     public ResponseEntity<User> register(@Valid @RequestBody User user) throws UsernameOrEmailExistsException, RoleNotFoundException {
         if (userService.exists(user.getUsername(), user.getEmail())) {

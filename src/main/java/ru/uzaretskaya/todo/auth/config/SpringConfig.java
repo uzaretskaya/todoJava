@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.SessionManagementFilter;
 import ru.uzaretskaya.todo.auth.filter.AuthTokenFilter;
+import ru.uzaretskaya.todo.auth.filter.ExceptionHandleFilter;
 import ru.uzaretskaya.todo.auth.service.UserDetailsServiceImpl;
 
 @Configuration
@@ -20,6 +21,7 @@ import ru.uzaretskaya.todo.auth.service.UserDetailsServiceImpl;
 public class SpringConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
     private AuthTokenFilter authTokenFilter;
+    private ExceptionHandleFilter exceptionHandleFilter;
 
     @Autowired
     public void setUserDetailsService(UserDetailsServiceImpl userDetailsService) {
@@ -29,6 +31,11 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void setAuthTokenFilter(AuthTokenFilter authTokenFilter) {
         this.authTokenFilter = authTokenFilter;
+    }
+
+    @Autowired
+    public void setExceptionHandleFilter(ExceptionHandleFilter exceptionHandleFilter) {
+        this.exceptionHandleFilter = exceptionHandleFilter;
     }
 
     @Bean
@@ -59,5 +66,6 @@ public class SpringConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         http.addFilterBefore(authTokenFilter, SessionManagementFilter.class);
+        http.addFilterBefore(exceptionHandleFilter, AuthTokenFilter.class);
     }
 }
