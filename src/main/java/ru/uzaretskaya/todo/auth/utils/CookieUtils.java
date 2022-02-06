@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class CookieUtils {
-    private final String ACCESS_TOKEN = "access_token";
+
+    @Value("${cookie.jwt.name}")
+    private String cookieJwtName;
 
     @Value("${cookie.jwt.max-age}")
     private int cookieAccessTokenDuration;
@@ -20,7 +22,8 @@ public class CookieUtils {
     private String cookieAccessTokenDomain;
 
     public HttpCookie createJwtCookie(String jwt) {
-        return ResponseCookie.from(ACCESS_TOKEN, jwt)
+        return ResponseCookie
+                .from(cookieJwtName, jwt)
                 .maxAge(cookieAccessTokenDuration)
                 .sameSite(SameSiteCookies.STRICT.getValue())
                 .httpOnly(true)
@@ -33,12 +36,24 @@ public class CookieUtils {
     public String getAccessToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            for (Cookie cookie: cookies) {
-                if(ACCESS_TOKEN.equals(cookie.getName())) {
+            for (Cookie cookie : cookies) {
+                if (cookieJwtName.equals(cookie.getName())) {
                     return cookie.getValue();
                 }
             }
         }
         return null;
+    }
+
+    public HttpCookie deleteJwtCookie() {
+        return ResponseCookie
+                .from(cookieJwtName, null)
+                .maxAge(0)
+                .sameSite(SameSiteCookies.STRICT.getValue())
+                .httpOnly(true)
+                .secure(true)
+                .domain(cookieAccessTokenDomain)
+                .path("/")
+                .build();
     }
 }

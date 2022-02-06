@@ -78,7 +78,7 @@ public class AuthController {
     }
 
     @PostMapping("/test-with-auth")
-    @PreAuthorize("USER")
+    @PreAuthorize("hasAuthority('USER')")
     public String testWithAuth() {
         return "OK-with-auth";
     }
@@ -137,6 +137,32 @@ public class AuthController {
         responseHeaders.add(HttpHeaders.SET_COOKIE, cookie.toString());
 
         return ResponseEntity.ok().headers(responseHeaders).body(userDetails.getUser());
+    }
+
+    @PostMapping("/auto")
+    public ResponseEntity<User> autoLogin() {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok().body(userDetails.getUser());
+    }
+
+    @PostMapping("/logout")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity logout() {
+        HttpCookie cookie = cookieUtils.deleteJwtCookie();
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add(HttpHeaders.SET_COOKIE, cookie.toString());
+        return ResponseEntity.ok().headers(responseHeaders).build();
+    }
+
+    @PostMapping("/update-password")
+    @PreAuthorize("hasAuthority('USER')")
+    public ResponseEntity<Boolean> updatePassword(@RequestBody String password) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+
+        int updatedCount = userService.updatePassword(encoder.encode(password), user.getId());
+
+        return ResponseEntity.ok(updatedCount == 1);
     }
 
     @ExceptionHandler(Exception.class)

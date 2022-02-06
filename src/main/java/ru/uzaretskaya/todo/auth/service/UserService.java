@@ -50,6 +50,10 @@ public class UserService {
         return activityRepository.changeActivated(uuid, true);
     }
 
+    public int updatePassword(String password, long id) {
+        return userRepository.updatePassword(password, id);
+    }
+
     // maybe for future
     public int deactivate(String uuid) {
         return activityRepository.changeActivated(uuid, false);
