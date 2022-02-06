@@ -2,7 +2,7 @@ package ru.uzaretskaya.todo.auth.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.uzaretskaya.todo.auth.entity.Role;
+import ru.uzaretskaya.todo.auth.repository.entity.Role;
 
 import java.util.Optional;
 

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.uzaretskaya.todo.business.entity.Priority;
-import ru.uzaretskaya.todo.business.search.PrioritySearchValues;
+import ru.uzaretskaya.todo.business.repository.entity.Priority;
+import ru.uzaretskaya.todo.business.repository.search.PrioritySearchValues;
 import ru.uzaretskaya.todo.business.service.PriorityService;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.ok;
-import static ru.uzaretskaya.todo.business.util.AllExecutedMethodsLogger.loggingMethodName;
+import static ru.uzaretskaya.todo.baseUtils.AllExecutedMethodsLogger.loggingMethodName;
 
 @RestController
 @RequestMapping("/priority")

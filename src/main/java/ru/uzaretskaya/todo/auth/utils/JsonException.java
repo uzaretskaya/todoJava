@@ -1,4 +1,4 @@
-package ru.uzaretskaya.todo.auth.object;
+package ru.uzaretskaya.todo.auth.utils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

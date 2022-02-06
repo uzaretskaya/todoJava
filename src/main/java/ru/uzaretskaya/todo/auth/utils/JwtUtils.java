@@ -9,7 +9,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ru.uzaretskaya.todo.auth.entity.User;
+import ru.uzaretskaya.todo.auth.repository.entity.User;
 
 import java.util.Date;
 import java.util.HashMap;

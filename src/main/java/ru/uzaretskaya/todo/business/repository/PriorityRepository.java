@@ -3,7 +3,7 @@ package ru.uzaretskaya.todo.business.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.uzaretskaya.todo.business.entity.Priority;
+import ru.uzaretskaya.todo.business.repository.entity.Priority;
 
 import java.util.List;
 

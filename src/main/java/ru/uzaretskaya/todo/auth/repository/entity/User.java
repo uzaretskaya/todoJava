@@ -1,4 +1,4 @@
-package ru.uzaretskaya.todo.auth.entity;
+package ru.uzaretskaya.todo.auth.repository.entity;
 
 import lombok.Getter;
 import lombok.Setter;

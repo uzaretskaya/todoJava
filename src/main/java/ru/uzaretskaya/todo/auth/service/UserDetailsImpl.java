@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.uzaretskaya.todo.auth.entity.User;
+import ru.uzaretskaya.todo.auth.repository.entity.User;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

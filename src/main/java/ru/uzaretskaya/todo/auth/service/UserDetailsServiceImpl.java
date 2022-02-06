@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.uzaretskaya.todo.auth.entity.User;
+import ru.uzaretskaya.todo.auth.repository.entity.User;
 import ru.uzaretskaya.todo.auth.repository.UserRepository;
 
 import java.util.Optional;

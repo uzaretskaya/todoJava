@@ -14,8 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.SessionManagementFilter;
-import ru.uzaretskaya.todo.auth.filter.AuthTokenFilter;
-import ru.uzaretskaya.todo.auth.filter.ExceptionHandleFilter;
+import ru.uzaretskaya.todo.auth.config.filter.AuthTokenFilter;
+import ru.uzaretskaya.todo.auth.config.filter.ExceptionHandleFilter;
 import ru.uzaretskaya.todo.auth.service.UserDetailsServiceImpl;
 
 @Configuration

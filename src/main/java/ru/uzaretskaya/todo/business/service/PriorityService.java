@@ -2,7 +2,7 @@ package ru.uzaretskaya.todo.business.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.uzaretskaya.todo.business.entity.Priority;
+import ru.uzaretskaya.todo.business.repository.entity.Priority;
 import ru.uzaretskaya.todo.business.repository.PriorityRepository;
 
 import java.util.List;

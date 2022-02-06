@@ -1,4 +1,4 @@
-package ru.uzaretskaya.todo.auth.filter;
+package ru.uzaretskaya.todo.auth.config.filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -8,8 +8,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import ru.uzaretskaya.todo.auth.entity.User;
-import ru.uzaretskaya.todo.auth.exception.JwtCommonException;
+import ru.uzaretskaya.todo.auth.repository.entity.User;
+import ru.uzaretskaya.todo.auth.utils.exception.JwtCommonException;
 import ru.uzaretskaya.todo.auth.service.UserDetailsImpl;
 import ru.uzaretskaya.todo.auth.utils.CookieUtils;
 import ru.uzaretskaya.todo.auth.utils.JwtUtils;

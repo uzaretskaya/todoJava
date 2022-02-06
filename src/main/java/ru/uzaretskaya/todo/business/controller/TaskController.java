@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.uzaretskaya.todo.business.entity.Task;
-import ru.uzaretskaya.todo.business.search.TaskSearchValues;
+import ru.uzaretskaya.todo.business.repository.entity.Task;
+import ru.uzaretskaya.todo.business.repository.search.TaskSearchValues;
 import ru.uzaretskaya.todo.business.service.TaskService;
 
 import java.util.Calendar;
@@ -34,7 +34,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import static ru.uzaretskaya.todo.baseUtils.CommonValues.ID_COLUMN;
 import static ru.uzaretskaya.todo.baseUtils.CommonValues.PAGE_NUMBER;
 import static ru.uzaretskaya.todo.baseUtils.CommonValues.PAGE_SIZE;
-import static ru.uzaretskaya.todo.business.util.AllExecutedMethodsLogger.loggingMethodName;
+import static ru.uzaretskaya.todo.baseUtils.AllExecutedMethodsLogger.loggingMethodName;
 
 @RestController
 @RequestMapping("/task")

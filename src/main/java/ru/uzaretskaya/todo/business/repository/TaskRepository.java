@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.uzaretskaya.todo.business.entity.Task;
+import ru.uzaretskaya.todo.business.repository.entity.Task;
 
 import java.util.Date;
 import java.util.List;

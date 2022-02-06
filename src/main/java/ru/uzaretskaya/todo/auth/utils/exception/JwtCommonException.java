@@ -1,4 +1,4 @@
-package ru.uzaretskaya.todo.auth.exception;
+package ru.uzaretskaya.todo.auth.utils.exception;
 
 import org.springframework.security.core.AuthenticationException;
 

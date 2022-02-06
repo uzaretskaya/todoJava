@@ -5,12 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.uzaretskaya.todo.business.entity.Stat;
+import ru.uzaretskaya.todo.business.repository.entity.Stat;
 import ru.uzaretskaya.todo.business.service.StatService;
 
 import static java.lang.String.format;
 import static org.springframework.http.ResponseEntity.ok;
-import static ru.uzaretskaya.todo.business.util.AllExecutedMethodsLogger.loggingMethodName;
+import static ru.uzaretskaya.todo.baseUtils.AllExecutedMethodsLogger.loggingMethodName;
 
 @RestController
 public class StatController {

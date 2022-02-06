@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import ru.uzaretskaya.todo.business.entity.Task;
+import ru.uzaretskaya.todo.business.repository.entity.Task;
 import ru.uzaretskaya.todo.business.repository.TaskRepository;
-import ru.uzaretskaya.todo.business.search.TaskSearchValues;
+import ru.uzaretskaya.todo.business.repository.search.TaskSearchValues;
 
 import javax.transaction.Transactional;
 import java.util.List;

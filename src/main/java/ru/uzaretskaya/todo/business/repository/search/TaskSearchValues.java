@@ -1,4 +1,4 @@
-package ru.uzaretskaya.todo.business.search;
+package ru.uzaretskaya.todo.business.repository.search;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
