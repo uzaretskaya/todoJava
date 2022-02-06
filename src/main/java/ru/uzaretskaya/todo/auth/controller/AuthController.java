@@ -11,6 +11,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,6 +29,7 @@ import ru.uzaretskaya.todo.auth.exception.RoleNotFoundException;
 import ru.uzaretskaya.todo.auth.exception.UserAlreadyActivatedException;
 import ru.uzaretskaya.todo.auth.exception.UsernameOrEmailExistsException;
 import ru.uzaretskaya.todo.auth.object.JsonException;
+import ru.uzaretskaya.todo.auth.service.EmailService;
 import ru.uzaretskaya.todo.auth.service.UserDetailsImpl;
 import ru.uzaretskaya.todo.auth.service.UserService;
 import ru.uzaretskaya.todo.auth.utils.CookieUtils;
@@ -46,6 +48,8 @@ import static ru.uzaretskaya.todo.auth.service.UserService.DEFAULT_ROLE;
 public class AuthController {
 
     private final UserService userService;
+    private final EmailService emailService;
+    private final UserDetailsService userDetailsService;
     private final PasswordEncoder encoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
@@ -54,12 +58,16 @@ public class AuthController {
     @Autowired
     public AuthController(
             UserService userService,
+            EmailService emailService,
+            UserDetailsService userDetailsService,
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
             JwtUtils jwtUtils,
             CookieUtils cookieUtils
     ) {
         this.userService = userService;
+        this.emailService = emailService;
+        this.userDetailsService = userDetailsService;
         this.encoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
@@ -100,7 +108,36 @@ public class AuthController {
         activity.setUuid(UUID.randomUUID().toString());
         userService.register(user, activity);
 
+        emailService.sendActivationEmail(user.getEmail(), user.getUsername(), activity.getUuid());
+
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/resend-activate-email")
+    public ResponseEntity resendActivateEmail(@RequestBody String usernameOrEmail) {
+        UserDetailsImpl user = (UserDetailsImpl) userDetailsService.loadUserByUsername(usernameOrEmail.trim());
+        Activity activity = userService.findActivityByUserId(user.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("Activity Not Found with user: " + usernameOrEmail));
+
+        if (activity.isActivated())
+            throw new UserAlreadyActivatedException("User already activated: " + user.getUsername());
+
+        emailService.sendActivationEmail(user.getEmail(), user.getUsername(), activity.getUuid());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/send-reset-password-email")
+    public ResponseEntity sendEmailResetPassword(@RequestBody String email) {
+        try {
+            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(email);
+            User user = userDetails.getUser();
+            emailService.sendResetPasswordEmail(user.getEmail(), jwtUtils.createEmailResetToken(user));
+            return ResponseEntity.ok().build();
+        } catch (Exception ignored) {
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/activate")

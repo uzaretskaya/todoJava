@@ -28,7 +28,18 @@ public class JwtUtils {
     @Value("${jwt.access_token-expiration}")
     private int accessTokenExpiration;
 
+    @Value("${jwt.reset_pass_token-expiration}")
+    private int resetPassTokenExpiration;
+
     public String createAccessToken(User user) {
+        return createToken(user, accessTokenExpiration);
+    }
+
+    public String createEmailResetToken(User user) {
+        return createToken(user, resetPassTokenExpiration);
+    }
+
+    private String createToken(User user, int expiration) {
         Date currentDate = new Date();
 
         Map<String, Object> claims = new HashMap<>();
@@ -38,7 +49,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(currentDate)
-                .setExpiration(new Date(currentDate.getTime() + accessTokenExpiration))
+                .setExpiration(new Date(currentDate.getTime() + expiration))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
@@ -61,7 +72,7 @@ public class JwtUtils {
     }
 
     public User getUser(String jwt) {
-        Map map = (Map)Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().get(USER_KEY);
+        Map map = (Map) Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().get(USER_KEY);
         ObjectMapper mapper = new ObjectMapper();
 
         return mapper.convertValue(map, User.class);

@@ -46,6 +46,10 @@ public class UserService {
         return activityRepository.findByUuid(uuid);
     }
 
+    public Optional<Activity> findActivityByUserId(Long id) {
+        return activityRepository.findByUserId(id);
+    }
+
     public int activate(String uuid) {
         return activityRepository.changeActivated(uuid, true);
     }
