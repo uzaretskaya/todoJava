@@ -1,14 +1,13 @@
 package ru.uzaretskaya.todo.auth.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.uzaretskaya.todo.auth.entity.Role;
 
 import java.util.Optional;
 
 @Repository
-public interface RoleRepository extends CrudRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 
     Optional<Role> findByName(String name);
-
 }

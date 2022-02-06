@@ -1,7 +1,6 @@
 plugins {
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'io.franzbecker.gradle-lombok' version '5.0.0'
     id 'java'
 }
 
@@ -13,26 +12,26 @@ repositories {
     mavenCentral()
 }
 
-lombok { // optional: values below are the defaults
-    version = "1.18.20"
-    sha256 = ""
-}
-
 ext {
     springVersion = '2.6.3'
 }
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter:${springVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springVersion}" // spring + jpa/hibernate
-    implementation "org.springframework.boot:spring-boot-starter-web:${springVersion}" // веб технологии
-    implementation "org.springframework.boot:spring-boot-starter-security:${springVersion}" // безопасность
-    implementation "org.springframework.boot:spring-boot-starter-mail:${springVersion}" // работа с email
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-web:${springVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-security:${springVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-mail:${springVersion}"
     implementation "org.springframework.boot:spring-boot-starter-validation:${springVersion}"
-    // валидация объектов - начиная с springboot 2.3 нужно подключать отдельно (раньше библиотека подключалась автоматически)
 
-    implementation 'org.postgresql:postgresql:42.3.1' // коннектор для БД PostgreSQL
-    implementation 'io.jsonwebtoken:jjwt:0.9.1' // библиотека для работы с jwt
+    implementation 'org.postgresql:postgresql:42.3.1'
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
     developmentOnly "org.springframework.boot:spring-boot-devtools:${springVersion}"
 

@@ -44,11 +44,12 @@ import static ru.uzaretskaya.todo.auth.service.UserService.DEFAULT_ROLE;
 @RequestMapping("/auth")
 @Log
 public class AuthController {
-    private UserService userService;
-    private PasswordEncoder encoder;
-    private AuthenticationManager authenticationManager;
-    private JwtUtils jwtUtils;
-    private CookieUtils cookieUtils;
+
+    private final UserService userService;
+    private final PasswordEncoder encoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtils jwtUtils;
+    private final CookieUtils cookieUtils;
 
     @Autowired
     public AuthController(

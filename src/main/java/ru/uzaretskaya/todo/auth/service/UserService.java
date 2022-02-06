@@ -18,10 +18,9 @@ public class UserService {
 
     public static final String DEFAULT_ROLE = "USER";
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private ActivityRepository activityRepository;
-
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final ActivityRepository activityRepository;
 
     @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository, ActivityRepository activityRepository) {
