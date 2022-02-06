@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.uzaretskaya.todo.auth.entity.User;
 import ru.uzaretskaya.todo.auth.exception.JwtCommonException;
@@ -25,6 +26,7 @@ import static java.util.Arrays.asList;
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 
+    private static final String BEARER_PREFIX = "Bearer ";
     private JwtUtils jwtUtils;
     private CookieUtils cookieUtils;
 
@@ -54,7 +56,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         if (!isRequestToPublicApi
                 //&& SecurityContextHolder.getContext().getAuthentication() == null
         ) {
-            String jwt = cookieUtils.getAccessToken(request);
+            String jwt;
+            if (request.getRequestURI().contains("update-password")) {
+                jwt = getJwtFromHeader(request);
+            } else {
+                jwt = cookieUtils.getAccessToken(request);
+            }
+
             if (jwt != null) {
                 if (jwtUtils.validate(jwt)) {
                     User user = jwtUtils.getUser(jwt);
@@ -74,5 +82,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private String getJwtFromHeader(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Authorisation");
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(BEARER_PREFIX)){
+            return headerAuth.substring(7);
+        }
+        return null;
     }
 }

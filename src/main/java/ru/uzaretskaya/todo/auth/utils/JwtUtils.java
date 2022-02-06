@@ -42,6 +42,8 @@ public class JwtUtils {
     private String createToken(User user, int expiration) {
         Date currentDate = new Date();
 
+        user.setPassword(null);
+
         Map<String, Object> claims = new HashMap<>();
         claims.put(USER_KEY, user);
         claims.put(SUBJECT, user.getId());

@@ -127,19 +127,6 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/send-reset-password-email")
-    public ResponseEntity sendEmailResetPassword(@RequestBody String email) {
-        try {
-            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(email);
-            User user = userDetails.getUser();
-            emailService.sendResetPasswordEmail(user.getEmail(), jwtUtils.createEmailResetToken(user));
-            return ResponseEntity.ok().build();
-        } catch (Exception ignored) {
-        }
-
-        return ResponseEntity.notFound().build();
-    }
-
     @PostMapping("/activate")
     public ResponseEntity<Boolean> activateUser(@RequestBody String uuid) {
 
@@ -189,6 +176,19 @@ public class AuthController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, cookie.toString());
         return ResponseEntity.ok().headers(responseHeaders).build();
+    }
+
+    @PostMapping("/send-reset-password-email")
+    public ResponseEntity sendEmailResetPassword(@RequestBody String email) {
+        try {
+            UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(email);
+            User user = userDetails.getUser();
+            emailService.sendResetPasswordEmail(user.getEmail(), jwtUtils.createEmailResetToken(user));
+            return ResponseEntity.ok().build();
+        } catch (Exception ignored) {
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping("/update-password")
